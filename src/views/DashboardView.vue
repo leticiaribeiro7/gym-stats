@@ -5,12 +5,14 @@ import { getWorkoutStats } from '@/composables/useWorkouts'
 interface Stats {
   workoutsThisWeek: number
   totalSets: number
+  prsThisWeek: number
   lastWorkout: any
 }
 
 const stats = ref<Stats>({
   workoutsThisWeek: 0,
   totalSets: 0,
+  prsThisWeek: 0,
   lastWorkout: null,
 })
 const loading = ref(true)
@@ -39,7 +41,7 @@ onMounted(async () => {
       <div class="stat-card">
         <div class="stat-label">Workouts</div>
         <div class="stat-value">{{ stats.workoutsThisWeek }}</div>
-        <div class="stat-unit">this week</div>
+        <div class="stat-unit">last 7 days</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Sets</div>
@@ -48,8 +50,8 @@ onMounted(async () => {
       </div>
       <div class="stat-card">
         <div class="stat-label">PRs</div>
-        <div class="stat-value">3</div>
-        <div class="stat-unit">this week</div>
+        <div class="stat-value">{{ stats.prsThisWeek }}</div>
+        <div class="stat-unit">last 7 days</div>
       </div>
     </div>
 

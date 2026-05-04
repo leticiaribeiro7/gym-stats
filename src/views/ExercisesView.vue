@@ -4,7 +4,7 @@ import { fetchExercises, exercises, createExercise } from '@/composables/useWork
 
 const showForm = ref(false)
 const newExerciseName = ref('')
-const newExerciseMuscle = ref('Chest')
+const newExerciseMuscle = ref('')
 const loading = ref(false)
 
 const muscleGroups = [
@@ -33,7 +33,7 @@ async function handleAddExercise() {
   try {
     await createExercise(newExerciseName.value, newExerciseMuscle.value)
     newExerciseName.value = ''
-    newExerciseMuscle.value = 'Chest'
+    newExerciseMuscle.value = ''
     showForm.value = false
   } finally {
     loading.value = false

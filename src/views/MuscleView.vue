@@ -8,8 +8,7 @@ const error = ref('')
 const muscleGroups = computed(() => {
   const groups = new Map<
     string,
-    { name: string; count: number; totalPr: number; unit: string }
-  >()
+    { name: string; count: number; totalPr: number; unit: string }>()
 
   exercises.value.forEach((exercise) => {
     const muscleGroup = exercise.muscle_group || 'Unknown'

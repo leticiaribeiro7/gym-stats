@@ -18,7 +18,8 @@ export interface Exercise {
   muscle_group: string
   personal_record: number
   unit: string
-  created_at: string
+  created_at: string,
+  pr_updated_at: string
 }
 
 export interface WorkoutExercise {
@@ -162,6 +163,22 @@ export async function createExercise(name: string, muscleGroup: string, unit: st
   }
 }
 
+export async function updateExercise(exerciseId: string, updateValues: Partial<Exercise>) {
+  try {
+    const { error } = await supabase
+      .from('exercises')
+      .update({
+        ...updateValues,
+      })
+      .eq('id', exerciseId)
+
+    if (error) throw error
+  } catch (err: any) {
+    error.value = 'Failed to update exercise'
+    throw err
+  }
+}
+
 // Get workout details with exercises
 export async function getWorkoutDetails(workoutId: string) {
   try {
@@ -201,12 +218,21 @@ export async function getWorkoutStats() {
 
     if (fetchError) throw fetchError
 
+      const { count: prCount, error: prError } = await supabase
+      .from('exercises')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.value?.id)
+      .gte('pr_updated_at', sevenDaysAgo.toISOString().split('T')[0])
+      
+    if (prError) throw prError
+
     const workoutsCount = data?.length || 0
     const setsCount = data?.reduce((sum, w) => sum + (w.workout_exercises?.length || 0), 0) || 0
 
     return {
       workoutsThisWeek: workoutsCount,
       totalSets: setsCount,
+      prsThisWeek: prCount || 0,
       lastWorkout: data?.[0],
     }
   } catch (err: any) {

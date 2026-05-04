@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { fetchWorkouts, fetchExercises, createWorkout, addExerciseToWorkout, workouts, exercises, loading, error } from '@/composables/useWorkouts'
+import { fetchWorkouts, fetchExercises, createWorkout, addExerciseToWorkout, updateExercise, workouts, exercises, loading, error } from '@/composables/useWorkouts'
 
 const showForm = ref(false)
 const isSubmitting = ref(false)
@@ -38,10 +38,23 @@ const submitWorkout = async () => {
       newWorkout.value.notes
     )
 
+    // Recalculate PR for all exercises every time a workout is submitted
+    newWorkoutExercises.value.forEach(async ex => {
+      const pr = ex.weight * (1 + (0.0333 * ex.reps))
+      const dbExercise = exercises.value.find((e) => e.id === ex.exercise_id)
+      if (dbExercise && dbExercise.personal_record < pr) {
+        await updateExercise(dbExercise.id, { 
+          personal_record: pr,
+          pr_updated_at: new Date().toISOString()
+        })
+      }
+    })
+
     if (workout && newWorkoutExercises.value.length > 0) {
       const promises = newWorkoutExercises.value
         .filter(e => e.exercise_id)
         .map(e => addExerciseToWorkout(workout.id, e.exercise_id, e.sets, e.reps, e.weight))
+
       await Promise.all(promises)
       await fetchWorkouts() // Refresh to load nested exercises
     }
