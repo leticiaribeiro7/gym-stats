@@ -18,8 +18,10 @@ export interface Exercise {
   muscle_group: string
   personal_record: number
   unit: string
-  created_at: string,
+  created_at: string
   pr_updated_at: string
+  gif_url?: string
+  instructions?: string
 }
 
 export interface WorkoutExercise {
@@ -141,7 +143,7 @@ export async function addExerciseToWorkout(
 }
 
 // Create a new exercise
-export async function createExercise(name: string, muscleGroup: string, unit: string = 'kg') {
+export async function createExercise(name: string, muscleGroup: string, unit: string = 'kg', gifUrl?: string, instructions?: string) {
   try {
     const { data, error: createError } = await supabase
       .from('exercises')
@@ -151,6 +153,8 @@ export async function createExercise(name: string, muscleGroup: string, unit: st
         muscle_group: muscleGroup,
         unit,
         personal_record: 0,
+        gif_url: gifUrl,
+        instructions: instructions,
       })
       .select()
 
