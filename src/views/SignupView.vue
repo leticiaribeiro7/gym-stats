@@ -24,203 +24,64 @@ async function handleSignUp() {
 </script>
 
 <template>
-  <div class="auth-container">
-    <div class="auth-card">
-      <div class="auth-header">
-        <div class="logo">GS</div>
-        <h1>GymStats</h1>
-        <p>Create your account</p>
+  <div class="flex min-h-screen items-center justify-center bg-[#0f0f0f] p-5 text-white">
+    <div class="w-full max-w-[400px] rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-10 shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+      <div class="mb-8 text-center">
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-cyan-600 text-xl font-bold">GS</div>
+        <h1 class="mb-2 text-2xl font-bold">GymStats</h1>
+        <p class="text-sm text-neutral-500">Create your account</p>
       </div>
 
-      <form @submit.prevent="handleSignUp" class="auth-form">
-        <div v-if="authError" class="error-message">
+      <form @submit.prevent="handleSignUp" class="mb-6 flex flex-col gap-4">
+        <div v-if="authError" class="rounded-lg border border-red-500 bg-red-500/10 p-3 text-xs text-red-300">
           {{ authError }}
         </div>
 
-        <div class="form-group">
-          <label for="email">Email</label>
+        <div class="flex flex-col gap-2">
+          <label for="email" class="text-xs font-semibold uppercase tracking-[0.5px] text-neutral-500">Email</label>
           <input
             id="email"
             v-model="email"
             type="email"
             placeholder="you@example.com"
             required
+            class="rounded-lg border border-[#3a3a3a] bg-[#262626] p-3 text-sm text-white transition-all placeholder:text-neutral-600 focus:border-cyan-500 focus:bg-[#1f1f1f] focus:outline-none"
           />
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
+        <div class="flex flex-col gap-2">
+          <label for="password" class="text-xs font-semibold uppercase tracking-[0.5px] text-neutral-500">Password</label>
           <input
             id="password"
             v-model="password"
             type="password"
             placeholder="••••••••"
             required
+            class="rounded-lg border border-[#3a3a3a] bg-[#262626] p-3 text-sm text-white transition-all placeholder:text-neutral-600 focus:border-cyan-500 focus:bg-[#1f1f1f] focus:outline-none"
           />
         </div>
 
-        <div class="form-group">
-          <label for="confirm-password">Confirm Password</label>
+        <div class="flex flex-col gap-2">
+          <label for="confirm-password" class="text-xs font-semibold uppercase tracking-[0.5px] text-neutral-500">Confirm Password</label>
           <input
             id="confirm-password"
             v-model="confirmPassword"
             type="password"
             placeholder="••••••••"
             required
+            class="rounded-lg border border-[#3a3a3a] bg-[#262626] p-3 text-sm text-white transition-all placeholder:text-neutral-600 focus:border-cyan-500 focus:bg-[#1f1f1f] focus:outline-none"
           />
-          <span v-if="passwordMismatch" class="error-text">Passwords do not match</span>
+          <span v-if="passwordMismatch" class="text-xs text-red-300">Passwords do not match</span>
         </div>
 
-        <button type="submit" class="btn-submit" :disabled="loading">
+        <button type="submit" class="cursor-pointer rounded-lg bg-cyan-500 p-3 text-sm font-semibold text-black transition-all hover:not-disabled:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-50" :disabled="loading">
           {{ loading ? 'Creating account...' : 'Sign up' }}
         </button>
       </form>
 
-      <div class="auth-footer">
-        <p>Already have an account? <RouterLink to="/login">Sign in</RouterLink></p>
+      <div class="text-center text-xs text-neutral-500">
+        <p>Already have an account? <RouterLink to="/login" class="font-semibold text-cyan-500 hover:text-cyan-600">Sign in</RouterLink></p>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.auth-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #0f0f0f;
-  padding: 20px;
-}
-
-.auth-card {
-  background-color: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 40px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.auth-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
-.logo {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 20px;
-  margin: 0 auto 16px;
-}
-
-.auth-header h1 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.auth-header p {
-  color: #808080;
-  font-size: 14px;
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.error-message {
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid #ef4444;
-  color: #fca5a5;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 12px;
-}
-
-.error-text {
-  color: #fca5a5;
-  font-size: 12px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-label {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #808080;
-}
-
-input {
-  background-color: #262626;
-  border: 1px solid #3a3a3a;
-  border-radius: 8px;
-  padding: 12px;
-  color: #ffffff;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-input:focus {
-  outline: none;
-  border-color: #06b6d4;
-  background-color: #1f1f1f;
-}
-
-input::placeholder {
-  color: #606060;
-}
-
-.btn-submit {
-  background-color: #06b6d4;
-  color: #000000;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.btn-submit:hover:not(:disabled) {
-  background-color: #0891b2;
-}
-
-.btn-submit:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.auth-footer {
-  text-align: center;
-  color: #808080;
-  font-size: 12px;
-}
-
-.auth-footer a {
-  color: #06b6d4;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.auth-footer a:hover {
-  color: #0891b2;
-}
-</style>

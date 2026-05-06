@@ -77,121 +77,121 @@ const submitWorkout = async () => {
 </script>
 
 <template>
-  <div class="history">
-    <div class="header">
-      <div class="header-content">
+  <div class="flex flex-col gap-6">
+    <div>
+      <div class="flex items-center justify-between gap-4">
         <div>
-          <h1>Workout History</h1>
-          <p class="subtitle">View all your past workouts.</p>
+          <h1 class="mb-2 text-[28px] font-bold">Workout History</h1>
+          <p class="text-sm text-neutral-500">View all your past workouts.</p>
         </div>
-        <button @click="showForm = !showForm" class="btn-primary">
+        <button @click="showForm = !showForm" class="cursor-pointer rounded-lg bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
           {{ showForm ? 'Cancel' : 'Add Workout' }}
         </button>
       </div>
     </div>
 
-    <div v-if="showForm" class="form-card">
-      <h2>Log New Workout</h2>
-      <form @submit.prevent="submitWorkout" class="workout-form">
-        <div class="form-group">
-          <label for="date">Date</label>
-          <input type="date" id="date" v-model="newWorkout.date" required />
+    <div v-if="showForm" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-6">
+      <h2 class="mb-4 text-xl">Log New Workout</h2>
+      <form @submit.prevent="submitWorkout" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label for="date" class="text-sm font-medium text-neutral-200">Date</label>
+          <input type="date" id="date" v-model="newWorkout.date" required class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none" />
         </div>
         
-        <div class="form-group">
-          <label for="duration">Duration (minutes)</label>
-          <input type="number" id="duration" v-model="newWorkout.duration" min="1" required />
+        <div class="flex flex-col gap-2">
+          <label for="duration" class="text-sm font-medium text-neutral-200">Duration (minutes)</label>
+          <input type="number" id="duration" v-model="newWorkout.duration" min="1" required class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none" />
         </div>
 
-        <div class="form-group">
-          <label for="notes">Notes</label>
-          <textarea id="notes" v-model="newWorkout.notes" rows="3" placeholder="How did it go?"></textarea>
+        <div class="flex flex-col gap-2">
+          <label for="notes" class="text-sm font-medium text-neutral-200">Notes</label>
+          <textarea id="notes" v-model="newWorkout.notes" rows="3" placeholder="How did it go?" class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none"></textarea>
         </div>
 
-        <div class="form-group">
-          <label for="notes">Unit</label>
-          <input type='text' id="notes" v-model="newWorkout.unit"></input>
+        <div class="flex flex-col gap-2">
+          <label for="unit" class="text-sm font-medium text-neutral-200">Unit</label>
+          <input type="text" id="unit" v-model="newWorkout.unit" class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none" />
         </div>
 
-        <div class="exercises-section">
-          <h3>Exercises</h3>
-          <p v-if="exercises.length === 0" class="empty-text">
+        <div class="my-2 flex flex-col gap-4 rounded-lg border border-[#333] bg-[#1f1f1f] p-4">
+          <h3 class="m-0 text-base">Exercises</h3>
+          <p v-if="exercises.length === 0" class="text-sm text-red-500">
             No exercises available. Create some on the Exercises page first.
           </p>
           
-          <div v-for="(ex, index) in newWorkoutExercises" :key="index" class="exercise-input-row">
-            <div class="form-group flex-2">
-              <label v-if="index === 0">Exercise</label>
-              <select v-model="ex.exercise_id" required>
+          <div v-for="(ex, index) in newWorkoutExercises" :key="index" class="flex items-end gap-3 max-md:flex-col max-md:items-stretch">
+            <div class="flex flex-[2] flex-col gap-2">
+              <label v-if="index === 0" class="text-sm font-medium text-neutral-200">Exercise</label>
+              <select v-model="ex.exercise_id" required class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none">
                 <option disabled value="">{{ exercises.length ? 'Select an exercise' : 'None available' }}</option>
                 <option v-for="dbEx in exercises" :key="dbEx.id" :value="dbEx.id">{{ dbEx.name }}</option>
               </select>
             </div>
             
-            <div class="form-group flex-1">
-              <label v-if="index === 0">Sets</label>
-              <input type="number" v-model="ex.sets" min="1" required />
+            <div class="flex flex-1 flex-col gap-2">
+              <label v-if="index === 0" class="text-sm font-medium text-neutral-200">Sets</label>
+              <input type="number" v-model="ex.sets" min="1" required class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none" />
             </div>
             
-            <div class="form-group flex-1">
-              <label v-if="index === 0">Reps</label>
-              <input type="number" v-model="ex.reps" min="1" required />
+            <div class="flex flex-1 flex-col gap-2">
+              <label v-if="index === 0" class="text-sm font-medium text-neutral-200">Reps</label>
+              <input type="number" v-model="ex.reps" min="1" required class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none" />
             </div>
             
-            <div class="form-group flex-1">
-              <label v-if="index === 0">Weight (kg)</label>
-              <input type="number" v-model="ex.weight" min="0" step="0.5" required />
+            <div class="flex flex-1 flex-col gap-2">
+              <label v-if="index === 0" class="text-sm font-medium text-neutral-200">Weight (kg)</label>
+              <input type="number" v-model="ex.weight" min="0" step="0.5" required class="rounded-lg border border-[#404040] bg-[#262626] p-3 font-[inherit] text-white focus:border-cyan-500 focus:outline-none" />
             </div>
             
-            <div class="form-group remove-btn-wrapper">
-              <button type="button" @click="removeExerciseRow(index)" class="btn-icon-danger" v-if="newWorkoutExercises.length > 1" title="Remove">✕</button>
+            <div class="flex h-[42px] items-center">
+              <button type="button" @click="removeExerciseRow(index)" class="cursor-pointer bg-transparent px-1 py-2 text-lg text-red-500 transition-opacity hover:opacity-70" v-if="newWorkoutExercises.length > 1" title="Remove">✕</button>
             </div>
           </div>
           
-          <button type="button" @click="addExerciseRow" class="btn-secondary" v-if="exercises.length > 0">+ Add another exercise</button>
+          <button type="button" @click="addExerciseRow" class="self-start rounded-lg border border-cyan-500 bg-transparent px-4 py-2 text-sm font-semibold text-cyan-500 transition-all hover:bg-cyan-500/10" v-if="exercises.length > 0">+ Add another exercise</button>
         </div>
 
-        <button type="submit" class="btn-primary submit-btn" :disabled="isSubmitting">
+        <button type="submit" class="mt-2 self-start cursor-pointer rounded-lg bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50" :disabled="isSubmitting">
           {{ isSubmitting ? 'Saving...' : 'Save Workout' }}
         </button>
       </form>
     </div>
 
-    <div v-if="loading" class="empty-state">
+    <div v-if="loading" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-8 text-center text-neutral-500">
       <p>Loading workout history...</p>
     </div>
 
-    <div v-else-if="error" class="empty-state">
+    <div v-else-if="error" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-8 text-center text-neutral-500">
       <p>{{ error }}</p>
     </div>
 
-    <div v-else-if="workouts.length === 0" class="empty-state">
+    <div v-else-if="workouts.length === 0" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-8 text-center text-neutral-500">
       <p>No workouts yet. Add a workout to see history.</p>
     </div>
 
-    <div v-else class="workouts-timeline">
+    <div v-else class="flex flex-col gap-6">
       <div
         v-for="workout in workouts"
         :key="workout.id"
-        class="workout-entry"
+        class="flex gap-4 max-md:flex-col"
       >
-        <div class="workout-date">{{ workout.date }}</div>
-        <div class="workout-card">
-          <div class="workout-exercises">
+        <div class="min-w-[100px] pt-3 text-xs font-semibold text-neutral-600 max-md:pt-0">{{ workout.date }}</div>
+        <div class="flex-1 rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-4 transition-all hover:border-cyan-500 hover:bg-[#262626]">
+          <div class="mb-3 flex flex-col gap-2">
             <div
               v-for="exercise in workout.workout_exercises"
               :key="exercise.id"
-              class="exercise-row"
+              class="flex items-center justify-between border-b border-[#2a2a2a] py-2 last:border-b-0"
             >
-              <span class="exercise-name">
+              <span class="text-sm text-white">
                 {{ exercise.exercises?.name || 'Unknown exercise' }}
               </span>
-              <span class="exercise-sets">
+              <span class="text-xs font-semibold text-cyan-500">
                 {{ exercise.sets }} x {{ exercise.reps }}
               </span>
             </div>
           </div>
-          <div class="workout-duration">
+          <div class="pt-2 text-xs text-neutral-500">
             ⏱️ {{ workout.duration }} min
           </div>
         </div>
@@ -199,256 +199,3 @@ const submitWorkout = async () => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.history {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #808080;
-  font-size: 14px;
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.btn-primary {
-  background-color: #06b6d4;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-.btn-primary:hover {
-  opacity: 0.9;
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.form-card {
-  background-color: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.form-card h2 {
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-
-.workout-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #e5e5e5;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  background-color: #262626;
-  border: 1px solid #404040;
-  color: #fff;
-  border-radius: 8px;
-  padding: 12px;
-  font-family: inherit;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #06b6d4;
-}
-
-.submit-btn {
-  margin-top: 8px;
-  align-self: flex-start;
-}
-
-.exercises-section {
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 8px 0;
-  background-color: #1f1f1f;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.exercises-section h3 {
-  font-size: 16px;
-  margin: 0;
-}
-
-.empty-text {
-  color: #ef4444;
-  font-size: 14px;
-}
-
-.exercise-input-row {
-  display: flex;
-  gap: 12px;
-  align-items: flex-end;
-}
-
-.flex-1 { flex: 1; }
-.flex-2 { flex: 2; }
-
-.btn-secondary {
-  background-color: transparent;
-  color: #06b6d4;
-  border: 1px solid #06b6d4;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  align-self: flex-start;
-}
-
-.btn-secondary:hover {
-  background-color: rgba(6, 182, 212, 0.1);
-}
-
-.btn-icon-danger {
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 8px 4px;
-  transition: opacity 0.2s;
-}
-
-.btn-icon-danger:hover {
-  opacity: 0.7;
-}
-
-.remove-btn-wrapper {
-  height: 42px;
-  display: flex;
-  align-items: center;
-}
-
-.workouts-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.workout-entry {
-  display: flex;
-  gap: 16px;
-}
-
-.workout-date {
-  color: #606060;
-  font-size: 12px;
-  font-weight: 600;
-  min-width: 100px;
-  padding-top: 12px;
-}
-
-.workout-card {
-  flex: 1;
-  background-color: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 16px;
-  transition: all 0.2s ease;
-}
-
-.workout-card:hover {
-  border-color: #06b6d4;
-  background-color: #262626;
-}
-
-.workout-exercises {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.exercise-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #2a2a2a;
-}
-
-.exercise-row:last-child {
-  border-bottom: none;
-}
-
-.exercise-name {
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.exercise-sets {
-  font-size: 12px;
-  color: #06b6d4;
-  font-weight: 600;
-}
-
-.workout-duration {
-  color: #808080;
-  font-size: 12px;
-  padding-top: 8px;
-}
-
-.empty-state {
-  background-color: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 32px;
-  text-align: center;
-  color: #808080;
-}
-
-@media (max-width: 768px) {
-  .workout-entry {
-    flex-direction: column;
-  }
-
-  .workout-date {
-    padding-top: 0;
-  }
-}
-</style>

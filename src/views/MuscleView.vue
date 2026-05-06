@@ -45,121 +45,41 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="muscle">
-    <div class="header">
-      <h1>Muscle Groups</h1>
-      <p class="subtitle">Track your training volume by muscle group.</p>
+  <div class="flex flex-col gap-6">
+    <div>
+      <h1 class="mb-2 text-[28px] font-bold">Muscle Groups</h1>
+      <p class="text-sm text-neutral-500">Track your training volume by muscle group.</p>
     </div>
 
-    <div v-if="loading" class="empty-state">
+    <div v-if="loading" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-8 text-center text-neutral-500">
       <p>Loading muscle group data...</p>
     </div>
 
-    <div v-else-if="error" class="empty-state">
+    <div v-else-if="error" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-8 text-center text-neutral-500">
       <p>{{ error }}</p>
     </div>
 
-    <div v-else-if="muscleGroups.length === 0" class="empty-state">
+    <div v-else-if="muscleGroups.length === 0" class="rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-8 text-center text-neutral-500">
       <p>No exercises found yet. Add some exercises to populate muscle stats.</p>
     </div>
 
-    <div v-else class="muscles-grid">
-      <div v-for="(muscle, index) in muscleGroups" :key="index" class="muscle-card">
-        <div class="muscle-header">
-          <h3>{{ muscle.name }}</h3>
-          <div class="color-indicator"></div>
+    <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+      <div v-for="(muscle, index) in muscleGroups" :key="index" class="cursor-pointer rounded-xl border border-[#2a2a2a] bg-[#1a1a1a] p-5 transition-all hover:border-cyan-500 hover:bg-[#262626]">
+        <div class="mb-4 flex items-center justify-between">
+          <h3 class="text-base font-semibold">{{ muscle.name }}</h3>
+          <div class="h-3 w-3 rounded-full bg-cyan-500"></div>
         </div>
-        <div class="muscle-stats">
-          <div class="stat">
-            <div class="stat-label">Exercises</div>
-            <div class="stat-value">{{ muscle.count }}</div>
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="text-xs text-neutral-500">Exercises</div>
+            <div class="text-base font-semibold text-cyan-500">{{ muscle.count }}</div>
           </div>
-          <div class="stat">
-            <div class="stat-label">Avg PR</div>
-            <div class="stat-value">{{ muscle.averagePr }} {{ muscle.unit }}</div>
+          <div class="flex items-center justify-between">
+            <div class="text-xs text-neutral-500">Avg PR</div>
+            <div class="text-base font-semibold text-cyan-500">{{ muscle.averagePr }} {{ muscle.unit }}</div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.muscle {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #808080;
-  font-size: 14px;
-}
-
-.muscles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.muscle-card {
-  background-color: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  padding: 20px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.muscle-card:hover {
-  border-color: #06b6d4;
-  background-color: #262626;
-}
-
-.muscle-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.muscle-header h3 {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.color-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.muscle-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.stat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.stat-label {
-  color: #808080;
-  font-size: 12px;
-}
-
-.stat-value {
-  font-size: 16px;
-  font-weight: 600;
-  color: #06b6d4;
-}
-</style>
