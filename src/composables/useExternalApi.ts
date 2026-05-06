@@ -28,7 +28,7 @@ export function useExternalApi() {
             }
         };
       
-      const url = `${import.meta.env.VITE_EXERCISEDB_API_URL}/api/v1/exercises?name=${queryParam}&limit=3`;
+      const url = `${import.meta.env.VITE_EXERCISEDB_API_HOST}/api/v1/exercises?name=${queryParam}&limit=3`;
       const response = await fetch(url, options);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -36,7 +36,7 @@ export function useExternalApi() {
       
       // 2. Extrai o resultado da API
       const result = await response.json()
-      data.value = result
+      data.value = result.data
       
       // 3. Salva o resultado no cache para consultas futuras
       apiCache.set(queryParam, result)

@@ -9,6 +9,7 @@ export interface Workout {
   duration: number
   notes?: string
   created_at: string
+  workout_exercises?: WorkoutExercise[]
 }
 
 export interface Exercise {
@@ -33,6 +34,7 @@ export interface WorkoutExercise {
   weight: number
   unit: string
   created_at: string
+  exercises: Exercise
 }
 
 const workouts = ref<Workout[]>([])
@@ -49,13 +51,7 @@ export async function fetchWorkouts() {
     const { data, error: fetchError } = await supabase
       .from('workouts')
       .select(
-        `
-        *,
-        workout_exercises (
-          *,
-          exercises (*)
-        )
-      `,
+        `*, workout_exercises (*, exercises (*))`, //return workouts with their exercises and details of all exercises
       )
       .eq('user_id', user.value?.id)
       .order('date', { ascending: false })

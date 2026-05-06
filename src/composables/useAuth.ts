@@ -1,8 +1,9 @@
 import { ref, computed } from 'vue'
 import { supabase } from '@/utils/supabase'
+import type { User, Session } from '@supabase/supabase-js'
 
-export const user = ref(null)
-export const session = ref(null)
+export const user = ref<User | null>(null)
+export const session = ref<Session | null>(null)
 export const loading = ref(false)
 export const error = ref('')
 

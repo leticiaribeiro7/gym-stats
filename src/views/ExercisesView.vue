@@ -19,6 +19,7 @@ const {
   fetchData: searchExercises
 } = useExternalApi()
 
+
 const muscleGroups = [
   'Chest',
   'Back',
@@ -32,7 +33,7 @@ const muscleGroups = [
   'Calves',
   'Abs',
   'Glutes',
-]
+] // TODO: para exercicios personalizados 
 
 onMounted(async () => {
   await fetchExercises()
@@ -57,7 +58,13 @@ async function saveFromApi(apiExercise: any) {
   try {
     const muscle = apiExercise.targetMuscles ? apiExercise.targetMuscles[0] : 'Unknown'
 
-    await createExercise(apiExercise.name, muscle, 'kg', apiExercise.gifUrl, apiExercise.instructions.join("\n"))
+    await createExercise(
+      apiExercise.name,
+      muscle,
+      'kg',
+      apiExercise.gifUrl,
+      apiExercise.instructions ? apiExercise.instructions.join("\n") : ''
+    )
 
     search.value = ''
     searchResults.value = null
@@ -91,8 +98,8 @@ async function saveFromApi(apiExercise: any) {
       <form @submit.prevent="handleAddExercise" class="form">
         <div class="form-group">
           <label for="exercise-name">Exercise Name</label>
-          <input type='text' id="notes" v-model="search" placeholder="Search exercises..."></input>
-          <button class="btn-primary" @click="searchExercises(search)" :disabled="isSearching">
+          <input type="text" id="notes" v-model="search" placeholder="Search exercises..." />
+          <button type="button" class="btn-primary" @click="searchExercises(search)" :disabled="isSearching">
             {{ isSearching ? 'Searching...' : 'Search' }}
           </button>
 
@@ -107,11 +114,8 @@ async function saveFromApi(apiExercise: any) {
           style="margin-bottom: 24px; border: 1px dashed #06b6d4; padding: 16px; border-radius: 12px;">
 
           <h3 style="margin-bottom: 12px; color: #06b6d4;">Search Results</h3>
-          <div v-if="searchResults.length === 0" class="empty-state">
-            <p>No exercises found.</p>
-          </div>
 
-          <div v-for="(ex, index) in searchResults.data" :key="index" class="exercise-item">
+          <div v-for="(ex, index) in searchResults" :key="ex.id || index" class="exercise-item">
             <div class="exercise-info">
               <h3 style="text-transform: capitalize;">{{ ex.name }}</h3>
               <p class="muscle-group">Target: {{ ex.targetMuscles[0] }} | Equipment: {{ ex.equipments[0] }}</p>
@@ -122,6 +126,7 @@ async function saveFromApi(apiExercise: any) {
               {{ loading ? 'Saving...' : 'Add to My List' }}
             </button>
           </div>
+
         </div>
       </form>
     </div>
@@ -129,7 +134,7 @@ async function saveFromApi(apiExercise: any) {
     <!-- Exercises List -->
     <div v-if="exercises.length > 0" class="exercises-list">
       <div v-for="exercise in exercises" :key="exercise.id" class="exercise-item" @click="selectedExercise = exercise">
-        
+
         <div class="exercise-info">
           <h3>{{ exercise.name }}</h3>
           <p class="muscle-group">{{ exercise.muscle_group }}</p>
@@ -140,7 +145,7 @@ async function saveFromApi(apiExercise: any) {
           <button class="btn-icon">→</button>
         </div>
       </div>
-      
+
     </div>
     <div v-else class="empty-state">
       <p>No exercises yet. Create your first one!</p>
@@ -157,7 +162,8 @@ async function saveFromApi(apiExercise: any) {
           <img :src="selectedExercise.gif_url" :alt="selectedExercise.name" />
           <p><strong>Instructions:</strong> {{ selectedExercise.instructions }}</p>
           <p><strong>Muscle Group:</strong> {{ selectedExercise.muscle_group }}</p>
-          <p v-if="selectedExercise.personal_record"><strong>Personal Record:</strong> {{ selectedExercise.personal_record }} {{ selectedExercise.unit }}</p>
+          <p v-if="selectedExercise.personal_record"><strong>Personal Record:</strong> {{
+            selectedExercise.personal_record }} {{ selectedExercise.unit }}</p>
           <p v-else><strong>Personal Record:</strong> Not set yet</p>
         </div>
       </div>

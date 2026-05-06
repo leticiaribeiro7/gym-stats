@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { fetchWorkouts, fetchExercises, createWorkout, addExerciseToWorkout, updateExercise, workouts, exercises, loading, error } from '@/composables/useWorkouts'
 
+
 const showForm = ref(false)
 const isSubmitting = ref(false)
 const newWorkout = ref({
